@@ -1,7 +1,7 @@
 # GOON
 # [1] START PROGRAM
 print("[*] PROGRAM START")
-print("PROGRAM GOON")
+print("PROGRAM HYGRON")
 # [2] IMPORT LIBRARY
 # [2.1] IMPORT BUILD-IN LIBRARY
 import os
@@ -123,12 +123,31 @@ def TemporaryLogicControl():
 	pass
 # [4.7] CONVERT RESIZE RENAME LOGIC CONTROL
 def ConvertAndResizeAndRenameLogicControl(SCAN_RESULT):
-	pass
-		
+	# [4.7.1] LOOP EACH DIRECTORY IN SCAN RESULT
+	for DIRECTORY, FILES in SCAN_RESULT.items():
+		print("[*] Directory: %s" % DIRECTORY)
+		# [4.7.2] LOOP EACH FILE IN DIRECTORY
+		for FILE in FILES:
+			FILE_SUFFIX = FILE.suffix.lower()
+			# [4.7.3] GET SHORT SIDE FOR PHOTO FILE
+			if FILE_SUFFIX in SCAN_PHOTO_FORMAT:
+				SHORT_SIDE = GetPhotoShortSideWithPillow(FILE)
+			# [4.7.4] GET SHORT SIDE FOR VIDEO FILE
+			elif FILE_SUFFIX in SCAN_VIDEO_FORMAT:
+				SHORT_SIDE = GetVideoShortSideWithFFMPEG(FILE)
+			# [4.7.5] SKIP UNKNOWN FILE
+			else:
+				continue
+			# [4.7.6] PRINT FILE SHORT SIDE RESULT
+			print("[*] File: %-64s | Short Side: %s" % (FILE.name[-64:], SHORT_SIDE))
+
 # [5] MAIN PROGRAM
 # [5.1] MAIN PROGRAM FUNCTION
 def Main():
-	print("[*]")
+	# [5.1.1] SCAN WORKING DIRECTORY
+	SCAN_RESULT = ScanDirectoryWithPathLib(DEFAULT_WORKING_PATH)
+	# [5.1.2] RUN LOGIC CONTROL
+	ConvertAndResizeAndRenameLogicControl(SCAN_RESULT)
 # [5.2] MAIN PROGRAM TRIGGER
 if __name__ == '__main__':
 	Main()
