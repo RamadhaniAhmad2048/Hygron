@@ -114,17 +114,11 @@ def GetVideoShortSideWithFFMPEG(INPUT_FILE_PATH):
 		return 'FFMPEGError'
 # [4.4] CONVERT PHOTO WITH PILLOW
 def ConvertPhotoWithPillow(INPUT_FILE_PATH, OUTPUT_FILE_PATH):
-	# [4.4.1] TRY OPEN IMAGE FILE
+	# [4.4.1] TRY CONVERT PHOTO WITH PILLOW
 	try:
-		INPUT_FILE = Image.open(INPUT_FILE_PATH)
-	# [4.4.2] ERROR FILE NOT FOUND HANDLING
-	except FileNotFoundError:
-		print("[!] File %s Not Found Error" % str(INPUT_FILE_PATH)[-64:])
-		return 'FileNotFoundError'
-	# [4.4.3] ERROR PERMISSION DENIED HANDLING
-	except PermissionError:
-		print("[!] File %s Permission Denied Error" % str(INPUT_FILE_PATH)[-64:])
-		return 'PermissionError'
+		OLD_IMAGE_RESOLUTION = GetPhotoShortSideWithPillow(INPUT_FILE_PATH)
+	except Exception:
+		print("[!]")
 # [4.5] CONVERT VIDEO WITH FFMPEG
 def ConvertVideoWithFFMPEG(INPUT_FILE_PATH, OUTPUT_FILE_PATH):
 	pass
@@ -140,7 +134,8 @@ def OldNamelistLogic():
 # [5] MAIN PROGRAM
 # [5.1] MAIN PROGRAM FUNCTION
 def Main():
-	pass
+	SCAN_RESULT = ScanDirectoryWithPathLib(DEFAULT_WORKING_PATH)
+	ConvertAndResizeAndRenameLogicControl(SCAN_RESULT)
 if __name__ == '__main__':
 	Main()
 # [6] FINISH PROGRAM
